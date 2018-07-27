@@ -1,0 +1,14 @@
+.post_toc {
+	display: inline-block;
+	padding: 15px;
+	border: 1px solid #ebebeb;
+	background-color: #f8f8f8;
+	float: right;
+	margin: 0 0 15px 30px;
+}
+
+.post_toc ol {
+	padding-right: 0;
+	list-style-position: inside;
+	margin: 15px 0 0;
+}

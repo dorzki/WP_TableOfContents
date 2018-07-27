@@ -24,6 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Plugin constants.
 define( 'TOC_PATH', plugin_dir_path( __FILE__ ) );
+define( 'TOC_URL', plugin_dir_url( __FILE__ ) );
 
 
 /**
@@ -57,6 +58,7 @@ class Plugin {
 	public function __construct() {
 
 		add_action( 'init', [ $this, 'register_textdomain' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'load_assets' ] );
 
 		add_filter( 'the_content', [ $this, 'build_toc' ] );
 
@@ -72,6 +74,18 @@ class Plugin {
 	public function register_textdomain() {
 
 		load_plugin_textdomain( 'wp-toc', false, TOC_PATH . 'languages' );
+
+	}
+
+
+	/**
+	 * Load plugin CSS and JS
+	 */
+	public function load_assets() {
+
+		wp_enqueue_style( 'toc_styles', TOC_URL . 'assets/styles.css' );
+
+		wp_enqueue_script( 'toc_scripts', TOC_URL . 'assets/scripts.js', [ 'jquery' ], false, true );
 
 	}
 
