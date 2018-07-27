@@ -62,6 +62,8 @@ class Plugin {
 
 		add_filter( 'the_content', [ $this, 'build_toc' ] );
 
+		add_shortcode( 'disable_toc', '__return_false' );
+
 	}
 
 
@@ -102,11 +104,17 @@ class Plugin {
 	 */
 	public function build_toc( $content ) {
 
-		$content = preg_replace_callback( '/<(h2)>(.*?)<\/h2>/i', [ $this, 'extract_headings' ], $content );
+		if ( ! $this->is_disabled( $content ) ) {
 
-		$toc = $this->generate_toc();
+			$content = preg_replace_callback( '/<(h2)>(.*?)<\/h2>/i', [ $this, 'extract_headings' ], $content );
 
-		return $toc . $content;
+			$toc = $this->generate_toc();
+
+			$content = $toc . $content;
+
+		}
+
+		return $content;
 
 	}
 
@@ -160,6 +168,23 @@ class Plugin {
 		$html .= '</div>';
 
 		return $html;
+
+	}
+
+
+	/* ------------------------------------------ */
+
+
+	/**
+	 * Check if the user don't want TOC on this page.
+	 *
+	 * @param string $content the post content.
+	 *
+	 * @return boolean
+	 */
+	private function is_disabled( $content ) {
+
+		return ( false !== strpos( $content, '[disable_toc]' ) );
 
 	}
 
